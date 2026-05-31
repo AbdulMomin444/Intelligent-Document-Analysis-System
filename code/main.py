@@ -1,17 +1,25 @@
-import cv2
-import pytesseract
+from preprocess import preprocess_image
+from ocr import extract_text
 
-# Load image
-image = cv2.imread('sample.jpg')
+image_path = "../Dataset/sample.png"
 
-# Convert to grayscale
-gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+processed_image = preprocess_image(
+    image_path
+)
 
-# Apply threshold
-_, thresh = cv2.threshold(gray, 150, 255, cv2.THRESH_BINARY)
+text = extract_text(
+    processed_image
+)
 
-# OCR
-text = pytesseract.image_to_string(thresh)
-
-print("Extracted Text:")
+print("\n===== EXTRACTED TEXT =====\n")
 print(text)
+
+with open(
+    "../Output/extracted_text.txt",
+    "w",
+    encoding="utf-8"
+) as file:
+
+    file.write(text)
+
+print("\nText saved successfully.")
